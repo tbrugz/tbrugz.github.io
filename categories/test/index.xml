@@ -15,12 +15,16 @@
       <pubDate>Fri, 23 Dec 2016 00:00:00 +0000</pubDate>
       
       <guid>//tbrugz.github.io/post/1st-post/</guid>
-      <description>&lt;p&gt;Tentanto fazer o hugo funcionar, baseando-me em:
+      <description>&lt;p&gt;Tentanto fazer o &lt;a href=&#34;https://gohugo.io&#34;&gt;hugo&lt;/a&gt; funcionar, baseando-me em:
 &lt;a href=&#34;https://gohugo.io/tutorials/github-pages-blog/&#34;&gt;https://gohugo.io/tutorials/github-pages-blog/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Site de exemplo em: &lt;a href=&#34;http://spencerlyon.com/hugo_gh_blog/&#34;&gt;http://spencerlyon.com/hugo_gh_blog/&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Fontes do site em: &lt;a href=&#34;https://github.com/spencerlyon2/hugo_gh_blog/&#34;&gt;https://github.com/spencerlyon2/hugo_gh_blog/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: parece que está funcionando ;)
+Usando tema &lt;a href=&#34;https://github.com/digitalcraftsman/hugo-type-theme&#34;&gt;type&lt;/a&gt;.
+Fontes em &lt;a href=&#34;https://github.com/tbrugz/tbrugz-hugo&#34;&gt;https://github.com/tbrugz/tbrugz-hugo&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
