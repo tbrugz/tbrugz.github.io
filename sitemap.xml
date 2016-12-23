@@ -2,29 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tbrugz.github.io/posts/1st-post/</loc>
+    <loc>//tbrugz.github.io/posts/1st-post/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://tbrugz.github.io/categories/</loc>
+    <loc>//tbrugz.github.io/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://tbrugz.github.io/posts/</loc>
-    <lastmod>2016-12-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://tbrugz.github.io/categories/test/</loc>
+    <loc>//tbrugz.github.io/posts/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://tbrugz.github.io/</loc>
+    <loc>//tbrugz.github.io/categories/test/</loc>
+    <lastmod>2016-12-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>//tbrugz.github.io/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
