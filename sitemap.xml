@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>//tbrugz.github.io/posts/1st-post/</loc>
+    <loc>//tbrugz.github.io/post/1st-post/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
   </url>
   
@@ -12,7 +12,7 @@
   </url>
   
   <url>
-    <loc>//tbrugz.github.io/posts/</loc>
+    <loc>//tbrugz.github.io/post/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
