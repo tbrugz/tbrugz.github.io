@@ -41,6 +41,8 @@
 
   <ul class="nav-links">
     
+    <li><a href="https://bitbucket.org/tbrugz">Bitbucket</a></li>
+    
     <li><a href="https://github.com/tbrugz">GitHub</a></li>
     
     <li><a href="https://twitter.com/tbrugz">Twitter</a></li>
@@ -76,18 +78,8 @@
 <pre class="r"><code>vz&lt;- tab %&gt;% arrange(desc(interest_real)) %&gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
   top_n(20, interest_real)
-knitr::kable(vz)</code></pre>
-<table style="width:122%;">
-<colgroup>
-<col width="18%" />
-<col width="8%" />
-<col width="13%" />
-<col width="15%" />
-<col width="20%" />
-<col width="13%" />
-<col width="16%" />
-<col width="15%" />
-</colgroup>
+vz</code></pre>
+<table>
 <thead>
 <tr class="header">
 <th align="left">country</th>
@@ -308,18 +300,8 @@ knitr::kable(vz)</code></pre>
 vz&lt;- t2 %&gt;% arrange(desc(interest_real)) %&gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
   top_n(20, interest_real)
-knitr::kable(vz)</code></pre>
-<table style="width:132%;">
-<colgroup>
-<col width="27%" />
-<col width="8%" />
-<col width="13%" />
-<col width="15%" />
-<col width="20%" />
-<col width="13%" />
-<col width="16%" />
-<col width="15%" />
-</colgroup>
+vz</code></pre>
+<table>
 <thead>
 <tr class="header">
 <th align="left">country</th>
@@ -539,18 +521,8 @@ knitr::kable(vz)</code></pre>
 <pre class="r"><code>vz&lt;- t2 %&gt;% arrange(interest_real) %&gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
   top_n(-10, interest_real)
-knitr::kable(vz)</code></pre>
-<table style="width:118%;">
-<colgroup>
-<col width="15%" />
-<col width="6%" />
-<col width="13%" />
-<col width="15%" />
-<col width="20%" />
-<col width="13%" />
-<col width="16%" />
-<col width="15%" />
-</colgroup>
+vz</code></pre>
+<table>
 <thead>
 <tr class="header">
 <th align="left">country</th>
@@ -684,19 +656,8 @@ vz&lt;- t2 %&gt;% arrange(desc(debt_spending_real)) %&gt;%
   select(country, gdp, interest, inflation, interest_real,
          debt_gdp, debt_spending_real, population, continent) %&gt;%
   top_n(20, debt_spending_real)
-knitr::kable(vz)</code></pre>
-<table style="width:160%;">
-<colgroup>
-<col width="27%" />
-<col width="8%" />
-<col width="13%" />
-<col width="15%" />
-<col width="20%" />
-<col width="13%" />
-<col width="27%" />
-<col width="16%" />
-<col width="15%" />
-</colgroup>
+vz</code></pre>
+<table>
 <thead>
 <tr class="header">
 <th align="left">country</th>

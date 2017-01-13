@@ -28,18 +28,8 @@
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;vz&amp;lt;- tab %&amp;gt;% arrange(desc(interest_real)) %&amp;gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&amp;gt;%
   top_n(20, interest_real)
-knitr::kable(vz)&lt;/code&gt;&lt;/pre&gt;
-&lt;table style=&#34;width:122%;&#34;&gt;
-&lt;colgroup&gt;
-&lt;col width=&#34;18%&#34; /&gt;
-&lt;col width=&#34;8%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;col width=&#34;20%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;16%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;/colgroup&gt;
+vz&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
 &lt;th align=&#34;left&#34;&gt;country&lt;/th&gt;
@@ -260,18 +250,8 @@ knitr::kable(vz)&lt;/code&gt;&lt;/pre&gt;
 vz&amp;lt;- t2 %&amp;gt;% arrange(desc(interest_real)) %&amp;gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&amp;gt;%
   top_n(20, interest_real)
-knitr::kable(vz)&lt;/code&gt;&lt;/pre&gt;
-&lt;table style=&#34;width:132%;&#34;&gt;
-&lt;colgroup&gt;
-&lt;col width=&#34;27%&#34; /&gt;
-&lt;col width=&#34;8%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;col width=&#34;20%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;16%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;/colgroup&gt;
+vz&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
 &lt;th align=&#34;left&#34;&gt;country&lt;/th&gt;
@@ -491,18 +471,8 @@ knitr::kable(vz)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;vz&amp;lt;- t2 %&amp;gt;% arrange(interest_real) %&amp;gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&amp;gt;%
   top_n(-10, interest_real)
-knitr::kable(vz)&lt;/code&gt;&lt;/pre&gt;
-&lt;table style=&#34;width:118%;&#34;&gt;
-&lt;colgroup&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;col width=&#34;6%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;col width=&#34;20%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;16%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;/colgroup&gt;
+vz&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
 &lt;th align=&#34;left&#34;&gt;country&lt;/th&gt;
@@ -636,19 +606,8 @@ vz&amp;lt;- t2 %&amp;gt;% arrange(desc(debt_spending_real)) %&amp;gt;%
   select(country, gdp, interest, inflation, interest_real,
          debt_gdp, debt_spending_real, population, continent) %&amp;gt;%
   top_n(20, debt_spending_real)
-knitr::kable(vz)&lt;/code&gt;&lt;/pre&gt;
-&lt;table style=&#34;width:160%;&#34;&gt;
-&lt;colgroup&gt;
-&lt;col width=&#34;27%&#34; /&gt;
-&lt;col width=&#34;8%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;col width=&#34;20%&#34; /&gt;
-&lt;col width=&#34;13%&#34; /&gt;
-&lt;col width=&#34;27%&#34; /&gt;
-&lt;col width=&#34;16%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;/colgroup&gt;
+vz&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
 &lt;thead&gt;
 &lt;tr class=&#34;header&#34;&gt;
 &lt;th align=&#34;left&#34;&gt;country&lt;/th&gt;
