@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.18.1" />
+
+
+<title>Juros-Brasil - tbrugz.github.io</title>
+<meta property="og:title" content="Juros-Brasil - tbrugz.github.io">
+
+
+
+  
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="../../css/main.css" media="all">
+
+
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../" class="nav-logo">
+    <img src="../../images/logo.png" 
+         width="50" 
+         height="50" 
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/tbrugz">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/tbrugz">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">Juros-Brasil</h1>
+
+    
+    <span class="article-date">December 26, 2016</span>
+    
+
+    <div class="article-content">
+
+
+<p>Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme <a href="http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404">certa noticia</a>, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o <a href="http://www.tradingeconomics.com/">tradingeconomics</a>, com informação de 181 países, entrou no baile.</p>
+<p>Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem <a href="https://www.r-project.org/">R</a>. Inicialmente transformei a tabela da página inicial do <em>tradingeconomics</em> num arquivo CSV e o carreguei (ver <a href="../../data/2016/tradingecon.csv">tradingecon.csv</a>, valores consultados em 22/dez/2016)</p>
+<pre class="r"><code>tab &lt;- read_csv(&quot;../../../static/data/2016/tradingecon.csv&quot;)</code></pre>
+<p>Juro real é o juro nominal menos a inflação:</p>
+<pre class="r"><code>tab$interest_real &lt;- tab$interest - tab$inflation</code></pre>
+<p>E assim podemos ver<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> quais são os países com maior taxa de juros (real) - coluna <code>interest_real</code>:</p>
+<pre class="r"><code>vz&lt;- tab %&gt;% arrange(desc(interest_real)) %&gt;%
+  select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
+  top_n(20, interest_real)
+knitr::kable(vz)</code></pre>
+<table style="width:122%;">
+<colgroup>
+<col width="18%" />
+<col width="8%" />
+<col width="13%" />
+<col width="15%" />
+<col width="20%" />
+<col width="13%" />
+<col width="16%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">country</th>
+<th align="right">gdp</th>
+<th align="right">interest</th>
+<th align="right">inflation</th>
+<th align="right">interest_real</th>
+<th align="right">debt_gdp</th>
+<th align="right">population</th>
+<th align="left">continent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Gambia</td>
+<td align="right">1</td>
+<td align="right">23.00</td>
+<td align="right">7.43</td>
+<td align="right">15.57</td>
+<td align="right">50.70</td>
+<td align="right">1.99</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Mongolia</td>
+<td align="right">12</td>
+<td align="right">15.00</td>
+<td align="right">0.20</td>
+<td align="right">14.80</td>
+<td align="right">77.40</td>
+<td align="right">3.06</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Seychelles</td>
+<td align="right">1</td>
+<td align="right">12.40</td>
+<td align="right">-0.40</td>
+<td align="right">12.80</td>
+<td align="right">60.00</td>
+<td align="right">0.09</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Zimbabwe</td>
+<td align="right">14</td>
+<td align="right">10.69</td>
+<td align="right">-1.10</td>
+<td align="right">11.79</td>
+<td align="right">77.00</td>
+<td align="right">15.60</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Iran</td>
+<td align="right">425</td>
+<td align="right">20.00</td>
+<td align="right">9.30</td>
+<td align="right">10.70</td>
+<td align="right">16.36</td>
+<td align="right">78.80</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Ghana</td>
+<td align="right">38</td>
+<td align="right">25.50</td>
+<td align="right">15.50</td>
+<td align="right">10.00</td>
+<td align="right">67.60</td>
+<td align="right">27.41</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Djibouti</td>
+<td align="right">2</td>
+<td align="right">12.70</td>
+<td align="right">3.70</td>
+<td align="right">9.00</td>
+<td align="right">53.70</td>
+<td align="right">0.89</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Cape Verde</td>
+<td align="right">2</td>
+<td align="right">7.50</td>
+<td align="right">-1.30</td>
+<td align="right">8.80</td>
+<td align="right">123.00</td>
+<td align="right">0.52</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">19</td>
+<td align="right">15.00</td>
+<td align="right">6.69</td>
+<td align="right">8.31</td>
+<td align="right">6.60</td>
+<td align="right">27.10</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Lebanon</td>
+<td align="right">47</td>
+<td align="right">10.00</td>
+<td align="right">1.78</td>
+<td align="right">8.22</td>
+<td align="right">139.00</td>
+<td align="right">4.65</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Benin</td>
+<td align="right">8</td>
+<td align="right">4.50</td>
+<td align="right">-3.40</td>
+<td align="right">7.90</td>
+<td align="right">20.80</td>
+<td align="right">10.88</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Chad</td>
+<td align="right">11</td>
+<td align="right">2.45</td>
+<td align="right">-5.00</td>
+<td align="right">7.45</td>
+<td align="right">25.70</td>
+<td align="right">14.04</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Uganda</td>
+<td align="right">26</td>
+<td align="right">12.00</td>
+<td align="right">4.60</td>
+<td align="right">7.40</td>
+<td align="right">34.40</td>
+<td align="right">39.03</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Ecuador</td>
+<td align="right">101</td>
+<td align="right">8.38</td>
+<td align="right">1.05</td>
+<td align="right">7.33</td>
+<td align="right">33.10</td>
+<td align="right">16.28</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Tanzania</td>
+<td align="right">45</td>
+<td align="right">12.00</td>
+<td align="right">4.80</td>
+<td align="right">7.20</td>
+<td align="right">39.90</td>
+<td align="right">48.80</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Armenia</td>
+<td align="right">11</td>
+<td align="right">6.50</td>
+<td align="right">-0.60</td>
+<td align="right">7.10</td>
+<td align="right">42.23</td>
+<td align="right">2.99</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Brazil</td>
+<td align="right">1775</td>
+<td align="right">13.75</td>
+<td align="right">6.99</td>
+<td align="right">6.76</td>
+<td align="right">66.23</td>
+<td align="right">204.45</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Mali</td>
+<td align="right">13</td>
+<td align="right">4.50</td>
+<td align="right">-2.20</td>
+<td align="right">6.70</td>
+<td align="right">NA</td>
+<td align="right">17.60</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Zambia</td>
+<td align="right">22</td>
+<td align="right">15.50</td>
+<td align="right">8.80</td>
+<td align="right">6.70</td>
+<td align="right">31.00</td>
+<td align="right">15.47</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Haiti</td>
+<td align="right">9</td>
+<td align="right">20.00</td>
+<td align="right">13.30</td>
+<td align="right">6.70</td>
+<td align="right">26.45</td>
+<td align="right">10.91</td>
+<td align="left">Americas</td>
+</tr>
+</tbody>
+</table>
+<p>Então até parece que o Brasil não está tão mal, ficando na 17a posição, com um juro real de <code>6.76%</code>. Gambia está no topo, com <code>15.57%</code>. Mas também, combinar Gambia (PIB de 1bi) com Brasil (PIB de 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em 20bi pra ficar um pouco mais justo (Note-se que este filtro inclui as 110 maiores economias de um total de 181 listadas no <em>tradingeconomics</em>).</p>
+<pre class="r"><code>t2&lt;- filter(tab, gdp&gt;20)
+vz&lt;- t2 %&gt;% arrange(desc(interest_real)) %&gt;%
+  select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
+  top_n(20, interest_real)
+knitr::kable(vz)</code></pre>
+<table style="width:132%;">
+<colgroup>
+<col width="27%" />
+<col width="8%" />
+<col width="13%" />
+<col width="15%" />
+<col width="20%" />
+<col width="13%" />
+<col width="16%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">country</th>
+<th align="right">gdp</th>
+<th align="right">interest</th>
+<th align="right">inflation</th>
+<th align="right">interest_real</th>
+<th align="right">debt_gdp</th>
+<th align="right">population</th>
+<th align="left">continent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Iran</td>
+<td align="right">425</td>
+<td align="right">20.00</td>
+<td align="right">9.30</td>
+<td align="right">10.70</td>
+<td align="right">16.36</td>
+<td align="right">78.80</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Ghana</td>
+<td align="right">38</td>
+<td align="right">25.50</td>
+<td align="right">15.50</td>
+<td align="right">10.00</td>
+<td align="right">67.60</td>
+<td align="right">27.41</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Lebanon</td>
+<td align="right">47</td>
+<td align="right">10.00</td>
+<td align="right">1.78</td>
+<td align="right">8.22</td>
+<td align="right">139.00</td>
+<td align="right">4.65</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Uganda</td>
+<td align="right">26</td>
+<td align="right">12.00</td>
+<td align="right">4.60</td>
+<td align="right">7.40</td>
+<td align="right">34.40</td>
+<td align="right">39.03</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Ecuador</td>
+<td align="right">101</td>
+<td align="right">8.38</td>
+<td align="right">1.05</td>
+<td align="right">7.33</td>
+<td align="right">33.10</td>
+<td align="right">16.28</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Tanzania</td>
+<td align="right">45</td>
+<td align="right">12.00</td>
+<td align="right">4.80</td>
+<td align="right">7.20</td>
+<td align="right">39.90</td>
+<td align="right">48.80</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Brazil</td>
+<td align="right">1775</td>
+<td align="right">13.75</td>
+<td align="right">6.99</td>
+<td align="right">6.76</td>
+<td align="right">66.23</td>
+<td align="right">204.45</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Zambia</td>
+<td align="right">22</td>
+<td align="right">15.50</td>
+<td align="right">8.80</td>
+<td align="right">6.70</td>
+<td align="right">31.00</td>
+<td align="right">15.47</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Belarus</td>
+<td align="right">55</td>
+<td align="right">18.00</td>
+<td align="right">11.40</td>
+<td align="right">6.60</td>
+<td align="right">27.30</td>
+<td align="right">9.50</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="even">
+<td align="left">Yemen</td>
+<td align="right">37</td>
+<td align="right">15.00</td>
+<td align="right">9.49</td>
+<td align="right">5.51</td>
+<td align="right">49.95</td>
+<td align="right">26.83</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">El Salvador</td>
+<td align="right">26</td>
+<td align="right">4.48</td>
+<td align="right">-0.82</td>
+<td align="right">5.30</td>
+<td align="right">64.16</td>
+<td align="right">6.13</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Dominican Republic</td>
+<td align="right">67</td>
+<td align="right">5.50</td>
+<td align="right">0.88</td>
+<td align="right">4.62</td>
+<td align="right">45.61</td>
+<td align="right">9.98</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Russia</td>
+<td align="right">1326</td>
+<td align="right">10.00</td>
+<td align="right">5.80</td>
+<td align="right">4.20</td>
+<td align="right">17.70</td>
+<td align="right">146.30</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="even">
+<td align="left">Ivory Coast</td>
+<td align="right">32</td>
+<td align="right">4.50</td>
+<td align="right">0.40</td>
+<td align="right">4.10</td>
+<td align="right">36.41</td>
+<td align="right">22.67</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Iraq</td>
+<td align="right">169</td>
+<td align="right">4.00</td>
+<td align="right">0.30</td>
+<td align="right">3.70</td>
+<td align="right">37.02</td>
+<td align="right">35.87</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Sri Lanka</td>
+<td align="right">82</td>
+<td align="right">7.00</td>
+<td align="right">3.40</td>
+<td align="right">3.60</td>
+<td align="right">76.00</td>
+<td align="right">20.96</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Uzbekistan</td>
+<td align="right">67</td>
+<td align="right">9.00</td>
+<td align="right">5.60</td>
+<td align="right">3.40</td>
+<td align="right">11.00</td>
+<td align="right">31.19</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Kenya</td>
+<td align="right">63</td>
+<td align="right">10.00</td>
+<td align="right">6.68</td>
+<td align="right">3.32</td>
+<td align="right">52.80</td>
+<td align="right">44.40</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Kazakhstan</td>
+<td align="right">184</td>
+<td align="right">12.00</td>
+<td align="right">8.70</td>
+<td align="right">3.30</td>
+<td align="right">23.30</td>
+<td align="right">17.40</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Jordan</td>
+<td align="right">38</td>
+<td align="right">3.75</td>
+<td align="right">0.50</td>
+<td align="right">3.25</td>
+<td align="right">93.40</td>
+<td align="right">9.53</td>
+<td align="left">Asia</td>
+</tr>
+</tbody>
+</table>
+<p>Daí o Brasil passa para a 7a posição. É possível ver também os países que menor juros têm:</p>
+<pre class="r"><code>vz&lt;- t2 %&gt;% arrange(interest_real) %&gt;%
+  select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
+  top_n(-10, interest_real)
+knitr::kable(vz)</code></pre>
+<table style="width:118%;">
+<colgroup>
+<col width="15%" />
+<col width="6%" />
+<col width="13%" />
+<col width="15%" />
+<col width="20%" />
+<col width="13%" />
+<col width="16%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">country</th>
+<th align="right">gdp</th>
+<th align="right">interest</th>
+<th align="right">inflation</th>
+<th align="right">interest_real</th>
+<th align="right">debt_gdp</th>
+<th align="right">population</th>
+<th align="left">continent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="right">510</td>
+<td align="right">22.48</td>
+<td align="right">180.90</td>
+<td align="right">-158.42</td>
+<td align="right">49.80</td>
+<td align="right">30.62</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Angola</td>
+<td align="right">103</td>
+<td align="right">16.00</td>
+<td align="right">41.15</td>
+<td align="right">-25.15</td>
+<td align="right">36.50</td>
+<td align="right">25.79</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Libya</td>
+<td align="right">29</td>
+<td align="right">3.00</td>
+<td align="right">27.40</td>
+<td align="right">-24.40</td>
+<td align="right">6.10</td>
+<td align="right">6.28</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Argentina</td>
+<td align="right">548</td>
+<td align="right">24.75</td>
+<td align="right">40.50</td>
+<td align="right">-15.75</td>
+<td align="right">48.40</td>
+<td align="right">43.13</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Sudan</td>
+<td align="right">84</td>
+<td align="right">14.20</td>
+<td align="right">29.49</td>
+<td align="right">-15.29</td>
+<td align="right">79.00</td>
+<td align="right">40.24</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Egypt</td>
+<td align="right">331</td>
+<td align="right">14.75</td>
+<td align="right">19.40</td>
+<td align="right">-4.65</td>
+<td align="right">85.00</td>
+<td align="right">83.40</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Nigeria</td>
+<td align="right">481</td>
+<td align="right">14.00</td>
+<td align="right">18.48</td>
+<td align="right">-4.48</td>
+<td align="right">11.50</td>
+<td align="right">182.20</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Norway</td>
+<td align="right">388</td>
+<td align="right">0.50</td>
+<td align="right">3.50</td>
+<td align="right">-3.00</td>
+<td align="right">31.70</td>
+<td align="right">5.21</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left">Congo</td>
+<td align="right">35</td>
+<td align="right">7.00</td>
+<td align="right">9.72</td>
+<td align="right">-2.72</td>
+<td align="right">19.69</td>
+<td align="right">71.40</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Cuba</td>
+<td align="right">81</td>
+<td align="right">2.25</td>
+<td align="right">4.50</td>
+<td align="right">-2.25</td>
+<td align="right">17.10</td>
+<td align="right">11.24</td>
+<td align="left">Americas</td>
+</tr>
+</tbody>
+</table>
+<p>Destacam-se entre eles os países com inflação alta, em especial a Venezuela. Vamos então tentar visualizar como se comportam os juros (reais) dos países frente aos seus PIBs (removendo os países com juros &lt; <code>-10%</code> a.a., pois estamos especialmente interessados em países com juros altos)</p>
+<pre class="r"><code>t2&lt;- filter(tab, gdp&gt;20, interest_real&gt; -10)
+gg&lt;- ggplot(t2)
+gg&lt;- gg + scale_y_log10()
+gg&lt;- gg + aes(x= interest_real, y=gdp)
+gg + geom_point(aes(colour= continent)) +
+  geom_text(data=filter(t2, gdp&gt;1000 | interest_real&lt; -2 | interest_real&gt; 6), aes(label=country), hjust=-0.1, vjust=-0.1, size=3)</code></pre>
+<p><img src="figures/fig_interest_real-1.png" width="960" /></p>
+<p>Note-se que o Brasil já está um tanto fora do padrão no quadrante superior direito.</p>
+<div id="dispendio-total-com-juros" class="section level2">
+<h2>Dispêndio total com juros</h2>
+<p>Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (<code>debt_gdp</code>). Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve dispender para que sua dívida não aumente<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o <code>debt_spending_real</code></p>
+<pre class="r"><code>tab$debt_spending_real &lt;- (tab$interest_real/100) * tab$debt_gdp
+t2&lt;- filter(tab, gdp&gt;20)
+vz&lt;- t2 %&gt;% arrange(desc(debt_spending_real)) %&gt;%
+  select(country, gdp, interest, inflation, interest_real,
+         debt_gdp, debt_spending_real, population, continent) %&gt;%
+  top_n(20, debt_spending_real)
+knitr::kable(vz)</code></pre>
+<table style="width:160%;">
+<colgroup>
+<col width="27%" />
+<col width="8%" />
+<col width="13%" />
+<col width="15%" />
+<col width="20%" />
+<col width="13%" />
+<col width="27%" />
+<col width="16%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">country</th>
+<th align="right">gdp</th>
+<th align="right">interest</th>
+<th align="right">inflation</th>
+<th align="right">interest_real</th>
+<th align="right">debt_gdp</th>
+<th align="right">debt_spending_real</th>
+<th align="right">population</th>
+<th align="left">continent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Lebanon</td>
+<td align="right">47</td>
+<td align="right">10.00</td>
+<td align="right">1.78</td>
+<td align="right">8.22</td>
+<td align="right">139.00</td>
+<td align="right">11.425800</td>
+<td align="right">4.65</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Ghana</td>
+<td align="right">38</td>
+<td align="right">25.50</td>
+<td align="right">15.50</td>
+<td align="right">10.00</td>
+<td align="right">67.60</td>
+<td align="right">6.760000</td>
+<td align="right">27.41</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Brazil</td>
+<td align="right">1775</td>
+<td align="right">13.75</td>
+<td align="right">6.99</td>
+<td align="right">6.76</td>
+<td align="right">66.23</td>
+<td align="right">4.477148</td>
+<td align="right">204.45</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">El Salvador</td>
+<td align="right">26</td>
+<td align="right">4.48</td>
+<td align="right">-0.82</td>
+<td align="right">5.30</td>
+<td align="right">64.16</td>
+<td align="right">3.400480</td>
+<td align="right">6.13</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Jordan</td>
+<td align="right">38</td>
+<td align="right">3.75</td>
+<td align="right">0.50</td>
+<td align="right">3.25</td>
+<td align="right">93.40</td>
+<td align="right">3.035500</td>
+<td align="right">9.53</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Tanzania</td>
+<td align="right">45</td>
+<td align="right">12.00</td>
+<td align="right">4.80</td>
+<td align="right">7.20</td>
+<td align="right">39.90</td>
+<td align="right">2.872800</td>
+<td align="right">48.80</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Yemen</td>
+<td align="right">37</td>
+<td align="right">15.00</td>
+<td align="right">9.49</td>
+<td align="right">5.51</td>
+<td align="right">49.95</td>
+<td align="right">2.752245</td>
+<td align="right">26.83</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Sri Lanka</td>
+<td align="right">82</td>
+<td align="right">7.00</td>
+<td align="right">3.40</td>
+<td align="right">3.60</td>
+<td align="right">76.00</td>
+<td align="right">2.736000</td>
+<td align="right">20.96</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Uganda</td>
+<td align="right">26</td>
+<td align="right">12.00</td>
+<td align="right">4.60</td>
+<td align="right">7.40</td>
+<td align="right">34.40</td>
+<td align="right">2.545600</td>
+<td align="right">39.03</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Ecuador</td>
+<td align="right">101</td>
+<td align="right">8.38</td>
+<td align="right">1.05</td>
+<td align="right">7.33</td>
+<td align="right">33.10</td>
+<td align="right">2.426230</td>
+<td align="right">16.28</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Croatia</td>
+<td align="right">49</td>
+<td align="right">2.50</td>
+<td align="right">-0.20</td>
+<td align="right">2.70</td>
+<td align="right">86.70</td>
+<td align="right">2.340900</td>
+<td align="right">4.23</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="even">
+<td align="left">Dominican Republic</td>
+<td align="right">67</td>
+<td align="right">5.50</td>
+<td align="right">0.88</td>
+<td align="right">4.62</td>
+<td align="right">45.61</td>
+<td align="right">2.107182</td>
+<td align="right">9.98</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Zambia</td>
+<td align="right">22</td>
+<td align="right">15.50</td>
+<td align="right">8.80</td>
+<td align="right">6.70</td>
+<td align="right">31.00</td>
+<td align="right">2.077000</td>
+<td align="right">15.47</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Serbia</td>
+<td align="right">37</td>
+<td align="right">4.00</td>
+<td align="right">1.50</td>
+<td align="right">2.50</td>
+<td align="right">73.40</td>
+<td align="right">1.835000</td>
+<td align="right">7.11</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left">Belarus</td>
+<td align="right">55</td>
+<td align="right">18.00</td>
+<td align="right">11.40</td>
+<td align="right">6.60</td>
+<td align="right">27.30</td>
+<td align="right">1.801800</td>
+<td align="right">9.50</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="even">
+<td align="left">India</td>
+<td align="right">2074</td>
+<td align="right">6.25</td>
+<td align="right">3.63</td>
+<td align="right">2.62</td>
+<td align="right">67.20</td>
+<td align="right">1.760640</td>
+<td align="right">1254.02</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Kenya</td>
+<td align="right">63</td>
+<td align="right">10.00</td>
+<td align="right">6.68</td>
+<td align="right">3.32</td>
+<td align="right">52.80</td>
+<td align="right">1.752960</td>
+<td align="right">44.40</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Iran</td>
+<td align="right">425</td>
+<td align="right">20.00</td>
+<td align="right">9.30</td>
+<td align="right">10.70</td>
+<td align="right">16.36</td>
+<td align="right">1.750520</td>
+<td align="right">78.80</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Greece</td>
+<td align="right">195</td>
+<td align="right">0.00</td>
+<td align="right">-0.90</td>
+<td align="right">0.90</td>
+<td align="right">176.90</td>
+<td align="right">1.592100</td>
+<td align="right">10.86</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="even">
+<td align="left">Ukraine</td>
+<td align="right">91</td>
+<td align="right">14.00</td>
+<td align="right">12.10</td>
+<td align="right">1.90</td>
+<td align="right">79.00</td>
+<td align="right">1.501000</td>
+<td align="right">42.76</td>
+<td align="left">Europe</td>
+</tr>
+</tbody>
+</table>
+<p>Na tabela acima podemos ver que o Brasil agora é o 3o colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB &lt; 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna <em>debt_spending_real</em>) do Brasil é de <code>4.47</code>, o que significa que o governo Brasileiro teria que gastar <code>4.47%</code> do PIB no pagamento de juros para que o montante permaceça constante (ou seja, para que a dívida não aumente).</p>
+<p>Bom, então podemos visualizar a relação entre o dispêndio anual (teórico) em juros e a taxa básica de juros das diferentes economias:</p>
+<pre class="r"><code>t2&lt;- filter(tab, gdp&gt;20, interest_real&gt; -10)
+gg&lt;- ggplot(t2)
+gg&lt;- gg + aes(x= interest_real, y=debt_spending_real, size=gdp)
+gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, debt_spending_real&gt;2.5 | debt_spending_real&lt; -2 | interest_real&lt; -4 | interest_real&gt; 10), aes(x= interest_real, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3)</code></pre>
+<p><img src="figures/fig_debtspending_interest-1.png" width="960" /></p>
+<p>Ou então entre o juro e o PIB:</p>
+<pre class="r"><code>gg&lt;- ggplot(t2)
+gg&lt;- gg + aes(x= gdp, y=debt_spending_real)
+gg&lt;- gg + geom_hline(yintercept = 0, colour=&quot;gray50&quot;)
+gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&gt;1000 | debt_spending_real&gt;4 | debt_spending_real&lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)</code></pre>
+<p><img src="figures/fig_debtspending_gdp-1.png" width="960" /></p>
+<p>E aqui utilizando uma escala logaritmica para o PIB:</p>
+<pre class="r"><code>gg&lt;- gg + scale_x_log10()
+gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&gt;1000 | debt_spending_real&gt;4 | debt_spending_real&lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)</code></pre>
+<p><img src="figures/fig_debtspending_interest_logx-1.png" width="960" /></p>
+<p>E daí da pra ver que sim, o Brasil <em>se destaca</em>…</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>A coluna <em>gdp</em> (PIB) está em US$ bilhões, a coluna population (população) está em milhões e as demais em pontos percentuais.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>É importante ressaltar que a taxa básica de juros de uma economia pode não refletir a taxa de juros (média) que o país deve pagar pelo montante de sua dívida visto que a dívida normalmente é contratada ao longo de diversos anos e a taxa básica de juros pode variar, e bastante, durante este período.<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+
+
+
+    </div>
+  </article>
+
+  
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../images/hugo-logo.png" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/r.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/yaml.min.js"></script>
+    
+    <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+  </body>
+</html>
+

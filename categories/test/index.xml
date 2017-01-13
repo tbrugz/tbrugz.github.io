@@ -2,19 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Test on tbrugz.github.io</title>
-    <link>//tbrugz.github.io/categories/test/index.xml</link>
+    <link>/categories/test/index.xml</link>
     <description>Recent content in Test on tbrugz.github.io</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Powered by [Hugo](//gohugo.io/) with the [Type Theme](//github.com/digitalcraftsman/hugo-type-theme)</copyright>
-    <atom:link href="//tbrugz.github.io/categories/test/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/test/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>1st post</title>
-      <link>//tbrugz.github.io/post/1st-post/</link>
+      <link>/2016/1st-post/</link>
       <pubDate>Fri, 23 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>//tbrugz.github.io/post/1st-post/</guid>
+      <guid>/2016/1st-post/</guid>
       <description>&lt;p&gt;Tentanto fazer o &lt;a href=&#34;https://gohugo.io&#34;&gt;hugo&lt;/a&gt; funcionar, baseando-me em:
 &lt;a href=&#34;https://gohugo.io/tutorials/github-pages-blog/&#34;&gt;https://gohugo.io/tutorials/github-pages-blog/&lt;/a&gt;&lt;/p&gt;
 

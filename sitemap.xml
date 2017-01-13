@@ -2,30 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>//tbrugz.github.io/post/1st-post/</loc>
+    <loc>/2016/juros-brasil/</loc>
+    <lastmod>2016-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2016/1st-post/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>//tbrugz.github.io/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>//tbrugz.github.io/post/</loc>
+    <loc>/post/</loc>
+    <lastmod>2016-12-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/test/</loc>
     <lastmod>2016-12-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>//tbrugz.github.io/categories/test/</loc>
-    <lastmod>2016-12-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>//tbrugz.github.io/</loc>
-    <lastmod>2016-12-23T00:00:00+00:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2016-12-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
