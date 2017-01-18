@@ -15,15 +15,18 @@
       
       <guid>/2016/1st-post/</guid>
       <description>&lt;p&gt;Tentanto fazer o &lt;a href=&#34;https://gohugo.io&#34;&gt;hugo&lt;/a&gt; funcionar, baseando-me em:
-&lt;a href=&#34;https://gohugo.io/tutorials/github-pages-blog/&#34;&gt;https://gohugo.io/tutorials/github-pages-blog/&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&#34;https://gohugo.io/tutorials/github-pages-blog/&#34;&gt;https://gohugo.io/tutorials/github-pages-blog/&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Site de exemplo em: &lt;a href=&#34;http://spencerlyon.com/hugo_gh_blog/&#34;&gt;http://spencerlyon.com/hugo_gh_blog/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Fontes do site em: &lt;a href=&#34;https://github.com/spencerlyon2/hugo_gh_blog/&#34;&gt;https://github.com/spencerlyon2/hugo_gh_blog/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Site de exemplo em: &lt;a href=&#34;http://spencerlyon.com/hugo_gh_blog/&#34;&gt;http://spencerlyon.com/hugo_gh_blog/&lt;/a&gt;. Fontes do site de exemplo em: &lt;a href=&#34;https://github.com/spencerlyon2/hugo_gh_blog/&#34;&gt;https://github.com/spencerlyon2/hugo_gh_blog/&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: parece que está funcionando ;)
 Usando tema &lt;a href=&#34;https://github.com/digitalcraftsman/hugo-type-theme&#34;&gt;type&lt;/a&gt;.
 Fontes em &lt;a href=&#34;https://github.com/tbrugz/tbrugz-hugo&#34;&gt;https://github.com/tbrugz/tbrugz-hugo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Update 2&lt;/strong&gt;: Acabei migrando pro &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;blogdown&lt;/a&gt;, que
+integra o &lt;a href=&#34;http://rmarkdown.rstudio.com/&#34;&gt;R markdown&lt;/a&gt; ao hugo. Com isso estou usando
+o tema &lt;a href=&#34;https://github.com/yihui/hugo-lithium-theme.git&#34;&gt;lithium&lt;/a&gt; do
+&lt;a href=&#34;https://github.com/yihui&#34;&gt;Yihui&lt;/a&gt; - &lt;em&gt;kudos&lt;/em&gt; pra ele pelo knitr, blogdown, printr, &amp;hellip;&lt;/p&gt;
 </description>
     </item>
     

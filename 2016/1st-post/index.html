@@ -67,34 +67,41 @@
 
     <div class="article-content">
       <p>Tentanto fazer o <a href="https://gohugo.io">hugo</a> funcionar, baseando-me em:
-<a href="https://gohugo.io/tutorials/github-pages-blog/">https://gohugo.io/tutorials/github-pages-blog/</a></p>
+<a href="https://gohugo.io/tutorials/github-pages-blog/">https://gohugo.io/tutorials/github-pages-blog/</a>.</p>
 
-<p>Site de exemplo em: <a href="http://spencerlyon.com/hugo_gh_blog/">http://spencerlyon.com/hugo_gh_blog/</a></p>
-
-<p>Fontes do site em: <a href="https://github.com/spencerlyon2/hugo_gh_blog/">https://github.com/spencerlyon2/hugo_gh_blog/</a></p>
+<p>Site de exemplo em: <a href="http://spencerlyon.com/hugo_gh_blog/">http://spencerlyon.com/hugo_gh_blog/</a>. Fontes do site de exemplo em: <a href="https://github.com/spencerlyon2/hugo_gh_blog/">https://github.com/spencerlyon2/hugo_gh_blog/</a>.</p>
 
 <p><strong>Update</strong>: parece que está funcionando ;)
 Usando tema <a href="https://github.com/digitalcraftsman/hugo-type-theme">type</a>.
 Fontes em <a href="https://github.com/tbrugz/tbrugz-hugo">https://github.com/tbrugz/tbrugz-hugo</a>.</p>
 
+<p><strong>Update 2</strong>: Acabei migrando pro <a href="https://github.com/rstudio/blogdown">blogdown</a>, que
+integra o <a href="http://rmarkdown.rstudio.com/">R markdown</a> ao hugo. Com isso estou usando
+o tema <a href="https://github.com/yihui/hugo-lithium-theme.git">lithium</a> do
+<a href="https://github.com/yihui">Yihui</a> - <em>kudos</em> pra ele pelo knitr, blogdown, printr, &hellip;</p>
+
     </div>
   </article>
 
-  <div id="disqus_thread"></div>
+  
+<div id="disqus_thread"></div>
 <script type="text/javascript">
-    var disqus_shortname = 'tbrugzblog';
-    var disqus_identifier = '\/2016\/1st-post\/';
-    var disqus_title = '1st post';
-    var disqus_url = '\/2016\/1st-post\/';
 
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
+(function() {
+    
+    
+    if (window.location.hostname == "localhost" || window.location.hostname == "127.0.0.1") {
+        return;
+    }
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'tbrugzblog';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 </main>
 
