@@ -20,7 +20,7 @@
 /BLOGDOWN-BODY-BEFORE --&gt;
 
 &lt;p&gt;Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme &lt;a href=&#34;http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404&#34;&gt;certa noticia&lt;/a&gt;, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o &lt;a href=&#34;http://www.tradingeconomics.com/&#34;&gt;tradingeconomics&lt;/a&gt;, com informação de 181 países, entrou no baile.&lt;/p&gt;
-&lt;p&gt;Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;. Inicialmente transformei a tabela da página inicial do &lt;em&gt;tradingeconomics&lt;/em&gt; num arquivo CSV e o carreguei (ver &lt;a href=&#34;./data/2016/tradingecon.csv&#34;&gt;tradingecon.csv&lt;/a&gt;, valores consultados em 22/dez/2016)&lt;/p&gt;
+&lt;p&gt;Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem &lt;a href=&#34;https://www.r-project.org/&#34;&gt;R&lt;/a&gt;. Inicialmente transformei a tabela da página inicial do &lt;em&gt;tradingeconomics&lt;/em&gt; num arquivo CSV e o carreguei (ver &lt;a href=&#34;./data/2016/tradingecon.csv&#34;&gt;tradingecon.csv&lt;/a&gt; - valores consultados em 22/dez/2016)&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tab &amp;lt;- read_csv(&amp;quot;../../../static/data/2016/tradingecon.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Juro real é o juro nominal menos a inflação:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tab$interest_real &amp;lt;- tab$interest - tab$inflation&lt;/code&gt;&lt;/pre&gt;
@@ -245,7 +245,7 @@ vz&lt;/code&gt;&lt;/pre&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Então até parece que o Brasil não está tão mal, ficando na 17a posição, com um juro real de &lt;code&gt;6.76%&lt;/code&gt;. Gambia está no topo, com &lt;code&gt;15.57%&lt;/code&gt;. Mas também, combinar Gambia (PIB de 1bi) com Brasil (PIB de 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em 20bi pra ficar um pouco mais justo (Note-se que este filtro inclui as 110 maiores economias de um total de 181 listadas no &lt;em&gt;tradingeconomics&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;Então, de fato, o Brasil não está no topo, ficando na 17ª posição, com um juro real de &lt;code&gt;6.76%&lt;/code&gt; (A notícia d’&lt;em&gt;oglobo&lt;/em&gt; falava em &lt;code&gt;8.00%&lt;/code&gt;, o que deixaria o Brasil na 11ª posição). Gambia está no topo, com &lt;code&gt;15.57%&lt;/code&gt; de juro real. Mas comparar Gambia (PIB de US$ 1bi) com Brasil (PIB de US$ 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em US$ 20bi de PIB pra comparação ficar um pouco mais justa (Note-se que este filtro inclui as 110 maiores economias de um total de 181 listadas no &lt;em&gt;tradingeconomics&lt;/em&gt;).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;t2&amp;lt;- filter(tab, gdp&amp;gt;20)
 vz&amp;lt;- t2 %&amp;gt;% arrange(desc(interest_real)) %&amp;gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&amp;gt;%
@@ -467,7 +467,7 @@ vz&lt;/code&gt;&lt;/pre&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Daí o Brasil passa para a 7a posição. É possível ver também os países que menor juros têm:&lt;/p&gt;
+&lt;p&gt;Daí o Brasil passa para a 7ª posição (estaria a 4ª se considerarmos o juro da matéria d’&lt;em&gt;oglobo&lt;/em&gt;). É possível ver também os países que menor juros têm:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;vz&amp;lt;- t2 %&amp;gt;% arrange(interest_real) %&amp;gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&amp;gt;%
   top_n(-10, interest_real)
@@ -588,18 +588,18 @@ vz&lt;/code&gt;&lt;/pre&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Destacam-se entre eles os países com inflação alta, em especial a Venezuela. Vamos então tentar visualizar como se comportam os juros (reais) dos países frente aos seus PIBs (removendo os países com juros &amp;lt; &lt;code&gt;-10%&lt;/code&gt; a.a., pois estamos especialmente interessados em países com juros altos)&lt;/p&gt;
+&lt;p&gt;Destacam-se entre os países com mais baixos juros os que possuem alta inflação, em especial a Venezuela. Vamos então visualizar como se comportam os juros (reais) dos países frente aos seus PIBs (removendo os países com juros &amp;lt; &lt;code&gt;-10%&lt;/code&gt; a.a., pois estamos especialmente interessados em países com juros altos)&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;t2&amp;lt;- filter(tab, gdp&amp;gt;20, interest_real&amp;gt; -10)
 gg&amp;lt;- ggplot(t2)
 gg&amp;lt;- gg + scale_y_log10()
 gg&amp;lt;- gg + aes(x= interest_real, y=gdp)
 gg + geom_point(aes(colour= continent)) +
   geom_text(data=filter(t2, gdp&amp;gt;1000 | interest_real&amp;lt; -2 | interest_real&amp;gt; 6), aes(label=country), hjust=-0.1, vjust=-0.1, size=3)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_interest_real-1.png&#34; width=&#34;960&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_interest_real-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Note-se que o Brasil já está um tanto fora do padrão no quadrante superior direito.&lt;/p&gt;
 &lt;div id=&#34;dispendio-total-com-juros&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Dispêndio total com juros&lt;/h2&gt;
-&lt;p&gt;Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (&lt;code&gt;debt_gdp&lt;/code&gt;). Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve dispender para que sua dívida não aumente&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o &lt;code&gt;debt_spending_real&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (&lt;code&gt;debt_gdp&lt;/code&gt;). Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt; (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o &lt;code&gt;debt_spending_real&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tab$debt_spending_real &amp;lt;- (tab$interest_real/100) * tab$debt_gdp
 t2&amp;lt;- filter(tab, gdp&amp;gt;20)
 vz&amp;lt;- t2 %&amp;gt;% arrange(desc(debt_spending_real)) %&amp;gt;%
@@ -844,24 +844,32 @@ vz&lt;/code&gt;&lt;/pre&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Na tabela acima podemos ver que o Brasil agora é o 3o colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB &amp;lt; 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna &lt;em&gt;debt_spending_real&lt;/em&gt;) do Brasil é de &lt;code&gt;4.47&lt;/code&gt;, o que significa que o governo Brasileiro teria que gastar &lt;code&gt;4.47%&lt;/code&gt; do PIB no pagamento de juros para que o montante permaceça constante (ou seja, para que a dívida não aumente).&lt;/p&gt;
-&lt;p&gt;Bom, então podemos visualizar a relação entre o dispêndio anual (teórico) em juros e a taxa básica de juros das diferentes economias:&lt;/p&gt;
+&lt;p&gt;Na tabela acima podemos ver que o Brasil agora é o 3º colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB &amp;lt; 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna &lt;code&gt;debt_spending_real&lt;/code&gt;) do Brasil é de &lt;code&gt;4.47&lt;/code&gt;, o que significa que o governo Brasileiro teria que gastar &lt;code&gt;4.47%&lt;/code&gt; do PIB no pagamento de juros para que o montante permanecesse constante (ou seja, para que a dívida não aumentasse).&lt;/p&gt;
+&lt;p&gt;Bom, podemos visualizar a relação entre a dívida em relação ao PIB (&lt;code&gt;debt_gdp&lt;/code&gt;) e a taxa básica de juros (&lt;code&gt;interest_real&lt;/code&gt;) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;t2&amp;lt;- filter(tab, gdp&amp;gt;20, interest_real&amp;gt; -10)
 gg&amp;lt;- ggplot(t2)
-gg&amp;lt;- gg + aes(x= interest_real, y=debt_spending_real, size=gdp)
-gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, debt_spending_real&amp;gt;2.5 | debt_spending_real&amp;lt; -2 | interest_real&amp;lt; -4 | interest_real&amp;gt; 10), aes(x= interest_real, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_debtspending_interest-1.png&#34; width=&#34;960&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Ou então entre o juro e o PIB:&lt;/p&gt;
+gg&amp;lt;- gg + aes(x=interest_real, y=debt_gdp, size=gdp)
+gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, debt_gdp&amp;gt;100 | interest_real&amp;lt; -4 | interest_real&amp;gt; 5), aes(x= interest_real, y=debt_gdp, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_debtspending_interest-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;!--
+Ou então entre o juro e o PIB:
+
+
+```r
+gg&lt;- ggplot(t2)
+gg&lt;- gg + aes(x= gdp, y=debt_spending_real)
+gg&lt;- gg + geom_hline(yintercept = 0, colour=&#34;gray50&#34;)
+gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&gt;1000 | debt_spending_real&gt;4 | debt_spending_real&lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)
+```
+--&gt;
+&lt;p&gt;Mas podemos também visualizar a relação entre o valor do gasto estimado com juros (coluna &lt;code&gt;debt_spending_real&lt;/code&gt;) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg&amp;lt;- ggplot(t2)
 gg&amp;lt;- gg + aes(x= gdp, y=debt_spending_real)
 gg&amp;lt;- gg + geom_hline(yintercept = 0, colour=&amp;quot;gray50&amp;quot;)
+gg&amp;lt;- gg + scale_x_log10()
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&amp;gt;1000 | debt_spending_real&amp;gt;4 | debt_spending_real&amp;lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_debtspending_gdp-1.png&#34; width=&#34;960&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;E aqui utilizando uma escala logaritmica para o PIB:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;gg&amp;lt;- gg + scale_x_log10()
-gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&amp;gt;1000 | debt_spending_real&amp;gt;4 | debt_spending_real&amp;lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_debtspending_interest_logx-1.png&#34; width=&#34;960&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;E daí da pra ver que sim, o Brasil &lt;em&gt;se destaca&lt;/em&gt;…&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####../content/post/2016/juros-brasil_files/figure-html/fig_debtspending_interest_logx-1.png&#34; width=&#34;100%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;E daí dá pra ver que sim, o Brasil &lt;em&gt;se destaca&lt;/em&gt;…&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
 &lt;hr /&gt;
