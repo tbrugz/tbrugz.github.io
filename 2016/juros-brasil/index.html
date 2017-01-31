@@ -72,8 +72,8 @@
     <div class="article-content">
 
 
-<p>Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme <a href="http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404">certa noticia</a>, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o <a href="http://www.tradingeconomics.com/">tradingeconomics</a>, com informação de 181 países, entrou no baile.</p>
-<p>Bom, resolvi pegar os dados e fazer uns experimentos - tudo usando a linguagem <a href="https://www.r-project.org/">R</a>. Inicialmente transformei a tabela da página inicial do <em>tradingeconomics</em> num arquivo CSV e o carreguei (ver <a href="../../data/2016/tradingecon.csv">tradingecon.csv</a> - valores consultados em 22/dez/2016)</p>
+<p>Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme <a href="http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404">certa noticia d’oglobo</a>, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o <a href="http://www.tradingeconomics.com/">tradingeconomics</a>, com informação de 181 países, entrou no baile.</p>
+<p>Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem <a href="https://www.r-project.org/">R</a>. Inicialmente transformei a tabela da página inicial do <em>tradingeconomics</em> num arquivo CSV e o carreguei (ver <a href="../../data/2016/tradingecon.csv">tradingecon.csv</a> - valores consultados em 22/dez/2016)</p>
 <pre class="r"><code>tab &lt;- read_csv(&quot;../../../static/data/2016/tradingecon.csv&quot;)</code></pre>
 <p>Juro real é o juro nominal menos a inflação:</p>
 <pre class="r"><code>tab$interest_real &lt;- tab$interest - tab$inflation</code></pre>
@@ -520,7 +520,7 @@ vz</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Daí o Brasil passa para a 7ª posição (estaria a 4ª se considerarmos o juro da matéria d’<em>oglobo</em>). É possível ver também os países que menor juros têm:</p>
+<p>Daí o Brasil passa para a 7ª posição (estaria na 4ª se considerarmos o juro da matéria d’<em>oglobo</em>). É possível ver também os países que menor juros têm:</p>
 <pre class="r"><code>vz&lt;- t2 %&gt;% arrange(interest_real) %&gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
   top_n(-10, interest_real)
@@ -652,7 +652,7 @@ gg + geom_point(aes(colour= continent)) +
 <p>Note-se que o Brasil já está um tanto fora do padrão no quadrante superior direito.</p>
 <div id="dispendio-total-com-juros" class="section level2">
 <h2>Dispêndio total com juros</h2>
-<p>Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (<code>debt_gdp</code>). Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> (o valor do juro anual em relação ao montante da dívida). Assim calcularemos o <code>debt_spending_real</code>.</p>
+<p>Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (<code>debt_gdp</code>). Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> (este valor equivale ao montante da dívida multiplicado pelo juro real anual). Assim calcularemos o <code>debt_spending_real</code>.</p>
 <pre class="r"><code>tab$debt_spending_real &lt;- (tab$interest_real/100) * tab$debt_gdp
 t2&lt;- filter(tab, gdp&gt;20)
 vz&lt;- t2 %&gt;% arrange(desc(debt_spending_real)) %&gt;%
@@ -898,7 +898,7 @@ vz</code></pre>
 </tbody>
 </table>
 <p>Na tabela acima podemos ver que o Brasil agora é o 3º colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB &lt; 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) do Brasil é de <code>4.47</code>, o que significa que o governo Brasileiro teria que gastar <code>4.47%</code> do PIB no pagamento de juros para que o montante permanecesse constante (ou seja, para que a dívida não aumentasse).</p>
-<p>Bom, podemos visualizar a relação entre a dívida em relação ao PIB (<code>debt_gdp</code>) e a taxa básica de juros (<code>interest_real</code>) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:</p>
+<p>Bom, podemos elaborar um gráfico com a dívida em relação ao PIB (<code>debt_gdp</code>) e a taxa básica de juros (<code>interest_real</code>) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:</p>
 <pre class="r"><code>t2&lt;- filter(tab, gdp&gt;20, interest_real&gt; -10)
 gg&lt;- ggplot(t2)
 gg&lt;- gg + aes(x=interest_real, y=debt_gdp, size=gdp)
@@ -915,7 +915,8 @@ gg<- gg + geom_hline(yintercept = 0, colour="gray50")
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp>1000 | debt_spending_real>4 | debt_spending_real< -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)
 ```
 -->
-<p>Mas podemos também visualizar a relação entre o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:</p>
+<p>Note-se no gráfico acima que muitas economias importantes possuem montante de dívida em relação ao PIB (eixo Y - <code>debt_gdp</code>) maior que o brasileiro, entretanto estas economias têm, em geral, um juro real baixo.</p>
+<p>Podemos também, e por fim, visualizar a relação entre o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:</p>
 <pre class="r"><code>gg&lt;- ggplot(t2)
 gg&lt;- gg + aes(x= gdp, y=debt_spending_real)
 gg&lt;- gg + geom_hline(yintercept = 0, colour=&quot;gray50&quot;)
