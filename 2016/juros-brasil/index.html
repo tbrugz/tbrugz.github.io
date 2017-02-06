@@ -60,7 +60,7 @@
 
   <article class="article">
     
-    <span class="article-duration">7 min read</span>
+    <span class="article-duration">10 min read</span>
     
 
     <h1 class="article-title">Juros-Brasil</h1>
@@ -73,7 +73,7 @@
 
 
 <p>Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme <a href="http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404">certa noticia d’oglobo</a>, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o <a href="http://www.tradingeconomics.com/">tradingeconomics</a>, com informação de 181 países, entrou no baile.</p>
-<p>Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem <a href="https://www.r-project.org/">R</a>. Inicialmente transformei a tabela da página inicial do <em>tradingeconomics</em> num arquivo CSV e o carreguei (ver <a href="../../data/2016/tradingecon.csv">tradingecon.csv</a> - valores consultados em 22/dez/2016)</p>
+<p>Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem <a href="https://www.r-project.org/">R</a>. Inicialmente transformei a tabela da página inicial do <em>tradingeconomics</em> num arquivo CSV e o carreguei (ver arquivo <a href="../../data/2016/tradingecon.csv">tradingecon.csv</a> - valores consultados em 22/dez/2016)</p>
 <pre class="r"><code>tab &lt;- read_csv(&quot;../../../static/data/2016/tradingecon.csv&quot;)</code></pre>
 <p>Juro real é o juro nominal menos a inflação:</p>
 <pre class="r"><code>tab$interest_real &lt;- tab$interest - tab$inflation</code></pre>
@@ -298,7 +298,7 @@ vz</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Então, de fato, o Brasil não está no topo, ficando na 17ª posição, com um juro real de <code>6.76%</code> (A notícia d’<em>oglobo</em> falava em <code>8.00%</code>, o que deixaria o Brasil na 11ª posição). Gambia está no topo, com <code>15.57%</code> de juro real. Mas comparar Gambia (PIB de US$ 1bi) com Brasil (PIB de US$ 1,7tri) é injusto. Então resolvi estabelecer uma linha de corte em US$ 20bi de PIB pra comparação ficar um pouco mais justa (Note-se que este filtro inclui as 110 maiores economias de um total de 181 listadas no <em>tradingeconomics</em>).</p>
+<p>Então, de fato, o Brasil não está no topo, ficando na 17ª posição, com um juro real de <code>6.76%</code> (A notícia d’<em>oglobo</em> falava em <code>8.00%</code>, o que deixaria o Brasil na 11ª posição). Gambia está no topo, com <code>15.57%</code> de juro real. Mas comparar Gambia (PIB de US$ 1bi) com Brasil (PIB de US$ 1,7tri) é um tanto injusto. Então resolvi estabelecer uma linha de corte em US$ 20bi de PIB pra comparação ficar um pouco mais justa (Note-se que este filtro inclui as 110 maiores economias de um total de 181 listadas no <em>tradingeconomics</em>).</p>
 <pre class="r"><code>t2&lt;- filter(tab, gdp&gt;20)
 vz&lt;- t2 %&gt;% arrange(desc(interest_real)) %&gt;%
   select(country, gdp, interest, inflation, interest_real, debt_gdp, population, continent) %&gt;%
@@ -652,13 +652,13 @@ gg + geom_point(aes(colour= continent)) +
 <p>Note-se que o Brasil já está um tanto fora do padrão no quadrante superior direito.</p>
 <div id="dispendio-total-com-juros" class="section level2">
 <h2>Dispêndio total com juros</h2>
-<p>Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (<code>debt_gdp</code>). Afinal se temos a dívida e o juros, podemos saber o quanto um pais deve despender para que sua dívida não aumente<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> (este valor equivale ao montante da dívida multiplicado pelo juro real anual). Assim calcularemos o <code>debt_spending_real</code>.</p>
+<p>Mas prestando atenção nas outras variáveis disponíveis há uma que parece promissora: a da dívida em relação ao PIB (<code>debt_gdp</code>). Afinal se temos a dívida e o juros, podemos saber o quanto um país deve despender para que sua dívida não aumente<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> (este valor equivale ao montante da dívida multiplicado pelo juro real anual). Assim calcularemos o <code>debt_spending_real</code>.</p>
 <pre class="r"><code>tab$debt_spending_real &lt;- (tab$interest_real/100) * tab$debt_gdp
 t2&lt;- filter(tab, gdp&gt;20)
 vz&lt;- t2 %&gt;% arrange(desc(debt_spending_real)) %&gt;%
   select(country, gdp, interest, inflation, interest_real,
          debt_gdp, debt_spending_real, population, continent) %&gt;%
-  top_n(20, debt_spending_real)
+  top_n(40, debt_spending_real)
 vz</code></pre>
 <table>
 <thead>
@@ -895,9 +895,229 @@ vz</code></pre>
 <td align="right">42.76</td>
 <td align="left">Europe</td>
 </tr>
+<tr class="odd">
+<td align="left">Ivory Coast</td>
+<td align="right">32</td>
+<td align="right">4.50</td>
+<td align="right">0.40</td>
+<td align="right">4.10</td>
+<td align="right">36.41</td>
+<td align="right">1.492810</td>
+<td align="right">22.67</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="even">
+<td align="left">Iraq</td>
+<td align="right">169</td>
+<td align="right">4.00</td>
+<td align="right">0.30</td>
+<td align="right">3.70</td>
+<td align="right">37.02</td>
+<td align="right">1.369740</td>
+<td align="right">35.87</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Pakistan</td>
+<td align="right">270</td>
+<td align="right">5.75</td>
+<td align="right">3.81</td>
+<td align="right">1.94</td>
+<td align="right">64.80</td>
+<td align="right">1.257120</td>
+<td align="right">189.87</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Mexico</td>
+<td align="right">1144</td>
+<td align="right">5.75</td>
+<td align="right">3.31</td>
+<td align="right">2.44</td>
+<td align="right">43.20</td>
+<td align="right">1.054080</td>
+<td align="right">121.01</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Vietnam</td>
+<td align="right">194</td>
+<td align="right">6.50</td>
+<td align="right">4.52</td>
+<td align="right">1.98</td>
+<td align="right">50.50</td>
+<td align="right">0.999900</td>
+<td align="right">91.70</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Romania</td>
+<td align="right">178</td>
+<td align="right">1.75</td>
+<td align="right">-0.70</td>
+<td align="right">2.45</td>
+<td align="right">38.40</td>
+<td align="right">0.940800</td>
+<td align="right">19.87</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left">China</td>
+<td align="right">10866</td>
+<td align="right">4.35</td>
+<td align="right">2.30</td>
+<td align="right">2.05</td>
+<td align="right">43.90</td>
+<td align="right">0.899950</td>
+<td align="right">1374.62</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Qatar</td>
+<td align="right">167</td>
+<td align="right">4.50</td>
+<td align="right">2.00</td>
+<td align="right">2.50</td>
+<td align="right">35.80</td>
+<td align="right">0.895000</td>
+<td align="right">2.34</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Trinidad and Tobago</td>
+<td align="right">28</td>
+<td align="right">4.75</td>
+<td align="right">3.00</td>
+<td align="right">1.75</td>
+<td align="right">45.60</td>
+<td align="right">0.798000</td>
+<td align="right">1.36</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Poland</td>
+<td align="right">475</td>
+<td align="right">1.50</td>
+<td align="right">0.00</td>
+<td align="right">1.50</td>
+<td align="right">51.30</td>
+<td align="right">0.769500</td>
+<td align="right">38.44</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left">Kazakhstan</td>
+<td align="right">184</td>
+<td align="right">12.00</td>
+<td align="right">8.70</td>
+<td align="right">3.30</td>
+<td align="right">23.30</td>
+<td align="right">0.768900</td>
+<td align="right">17.40</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Russia</td>
+<td align="right">1326</td>
+<td align="right">10.00</td>
+<td align="right">5.80</td>
+<td align="right">4.20</td>
+<td align="right">17.70</td>
+<td align="right">0.743400</td>
+<td align="right">146.30</td>
+<td align="left">Europe</td>
+</tr>
+<tr class="odd">
+<td align="left">Costa Rica</td>
+<td align="right">51</td>
+<td align="right">1.75</td>
+<td align="right">0.56</td>
+<td align="right">1.19</td>
+<td align="right">62.11</td>
+<td align="right">0.739109</td>
+<td align="right">4.85</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Malaysia</td>
+<td align="right">296</td>
+<td align="right">3.00</td>
+<td align="right">1.80</td>
+<td align="right">1.20</td>
+<td align="right">54.00</td>
+<td align="right">0.648000</td>
+<td align="right">31.20</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="odd">
+<td align="left">Colombia</td>
+<td align="right">292</td>
+<td align="right">7.50</td>
+<td align="right">5.96</td>
+<td align="right">1.54</td>
+<td align="right">38.00</td>
+<td align="right">0.585200</td>
+<td align="right">48.20</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="even">
+<td align="left">Uruguay</td>
+<td align="right">53</td>
+<td align="right">9.25</td>
+<td align="right">8.10</td>
+<td align="right">1.15</td>
+<td align="right">47.80</td>
+<td align="right">0.549700</td>
+<td align="right">3.47</td>
+<td align="left">Americas</td>
+</tr>
+<tr class="odd">
+<td align="left">Azerbaijan</td>
+<td align="right">53</td>
+<td align="right">15.00</td>
+<td align="right">12.10</td>
+<td align="right">2.90</td>
+<td align="right">16.00</td>
+<td align="right">0.464000</td>
+<td align="right">9.59</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Morocco</td>
+<td align="right">100</td>
+<td align="right">2.25</td>
+<td align="right">1.60</td>
+<td align="right">0.65</td>
+<td align="right">63.89</td>
+<td align="right">0.415285</td>
+<td align="right">33.60</td>
+<td align="left">Africa</td>
+</tr>
+<tr class="odd">
+<td align="left">Thailand</td>
+<td align="right">395</td>
+<td align="right">1.50</td>
+<td align="right">0.60</td>
+<td align="right">0.90</td>
+<td align="right">44.40</td>
+<td align="right">0.399600</td>
+<td align="right">67.96</td>
+<td align="left">Asia</td>
+</tr>
+<tr class="even">
+<td align="left">Cameroon</td>
+<td align="right">29</td>
+<td align="right">2.45</td>
+<td align="right">0.55</td>
+<td align="right">1.90</td>
+<td align="right">19.90</td>
+<td align="right">0.378100</td>
+<td align="right">23.34</td>
+<td align="left">Africa</td>
+</tr>
 </tbody>
 </table>
-<p>Na tabela acima podemos ver que o Brasil agora é o 3º colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB &lt; 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) do Brasil é de <code>4.47</code>, o que significa que o governo Brasileiro teria que gastar <code>4.47%</code> do PIB no pagamento de juros para que o montante permanecesse constante (ou seja, para que a dívida não aumentasse).</p>
+<p>Na tabela acima podemos ver que o Brasil agora é o 3º colocado, atrás apenas de Líbano e Gana, sendo que o PIB desses países é de aproximadamente 1/40 o do Brasil (sim, continuamos desconsiderando países com PIB &lt; 20bi US$). Note-se também que o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) do Brasil é de <code>4.47</code>, o que significa que o governo Brasileiro teria que gastar <code>4.47%</code> do PIB no pagamento de juros para que o montante permanecesse constante (ou seja, para que a dívida não aumente).</p>
 <p>Bom, podemos elaborar um gráfico com a dívida em relação ao PIB (<code>debt_gdp</code>) e a taxa básica de juros (<code>interest_real</code>) das diferentes economias para percebermos como estas variáveis tendem a se relacionar:</p>
 <pre class="r"><code>t2&lt;- filter(tab, gdp&gt;20, interest_real&gt; -10)
 gg&lt;- ggplot(t2)
@@ -916,7 +1136,7 @@ gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp>1000 | d
 ```
 -->
 <p>Note-se no gráfico acima que muitas economias importantes possuem montante de dívida em relação ao PIB (eixo Y - <code>debt_gdp</code>) maior que o brasileiro, entretanto estas economias têm, em geral, um juro real baixo.</p>
-<p>Podemos também, e por fim, visualizar a relação entre o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) e o PIB (utilizando uma escala logaritmica para o PIB) - o que pode ser mais reveldor:</p>
+<p>Podemos também, e por fim, visualizar a relação entre o valor do gasto estimado com juros (coluna <code>debt_spending_real</code>) e o PIB <!--(utilizando uma escala logaritmica para o PIB)--> - o que pode ser mais revelador:</p>
 <pre class="r"><code>gg&lt;- ggplot(t2)
 gg&lt;- gg + aes(x= gdp, y=debt_spending_real)
 gg&lt;- gg + geom_hline(yintercept = 0, colour=&quot;gray50&quot;)
@@ -924,6 +1144,68 @@ gg&lt;- gg + scale_x_log10()
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&gt;1000 | debt_spending_real&gt;4 | debt_spending_real&lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)</code></pre>
 <p><img src="figures/fig_debtspending_interest_logx-1.png" width="100%" /></p>
 <p>E daí dá pra ver que sim, o Brasil <em>se destaca</em>…</p>
+<p>Mas o que, afinal, isto significa? Bom, significa que não há paralelo, dentre as nações do porte do Brasil, de outras economias que gastem tanto com juros da dívida quanto o governo brasileiro: o Brasil gasta <code>4.47%</code> do seu PIB com juros enquanto a Índia, próxima colocada em dispêndio com juros para países com PIB semelhante ao brasileiro, gasta <code>1.76%</code>. E quando se gasta tanto com juros não é de se estranhar que faltem recursos para assuntos mais importantes.</p>
+<!--
+
+---
+
+
+Anexo: Tabela Dispêndio Total
+-----------------------------
+
+
+```r
+vz<- t2 %>% arrange(desc(debt_spending_real)) %>%
+  select(country, gdp, interest, inflation, interest_real, debt_gdp, debt_spending_real, population, continent) %>%
+  top_n(40, interest_real)
+vz
+```
+
+
+
+country                  gdp   interest   inflation   interest_real   debt_gdp   debt_spending_real   population  continent 
+--------------------  ------  ---------  ----------  --------------  ---------  -------------------  -----------  ----------
+Lebanon                   47      10.00        1.78            8.22     139.00            11.425800         4.65  Asia      
+Ghana                     38      25.50       15.50           10.00      67.60             6.760000        27.41  Africa    
+Brazil                  1775      13.75        6.99            6.76      66.23             4.477148       204.45  Americas  
+El Salvador               26       4.48       -0.82            5.30      64.16             3.400480         6.13  Americas  
+Jordan                    38       3.75        0.50            3.25      93.40             3.035500         9.53  Asia      
+Tanzania                  45      12.00        4.80            7.20      39.90             2.872800        48.80  Africa    
+Yemen                     37      15.00        9.49            5.51      49.95             2.752245        26.83  Asia      
+Sri Lanka                 82       7.00        3.40            3.60      76.00             2.736000        20.96  Asia      
+Uganda                    26      12.00        4.60            7.40      34.40             2.545600        39.03  Africa    
+Ecuador                  101       8.38        1.05            7.33      33.10             2.426230        16.28  Americas  
+Croatia                   49       2.50       -0.20            2.70      86.70             2.340900         4.23  Europe    
+Dominican Republic        67       5.50        0.88            4.62      45.61             2.107182         9.98  Americas  
+Zambia                    22      15.50        8.80            6.70      31.00             2.077000        15.47  Africa    
+Serbia                    37       4.00        1.50            2.50      73.40             1.835000         7.11  Europe    
+Belarus                   55      18.00       11.40            6.60      27.30             1.801800         9.50  Europe    
+India                   2074       6.25        3.63            2.62      67.20             1.760640      1254.02  Asia      
+Kenya                     63      10.00        6.68            3.32      52.80             1.752960        44.40  Africa    
+Iran                     425      20.00        9.30           10.70      16.36             1.750520        78.80  Asia      
+Ukraine                   91      14.00       12.10            1.90      79.00             1.501000        42.76  Europe    
+Ivory Coast               32       4.50        0.40            4.10      36.41             1.492810        22.67  Africa    
+Iraq                     169       4.00        0.30            3.70      37.02             1.369740        35.87  Asia      
+Pakistan                 270       5.75        3.81            1.94      64.80             1.257120       189.87  Asia      
+Mexico                  1144       5.75        3.31            2.44      43.20             1.054080       121.01  Americas  
+Vietnam                  194       6.50        4.52            1.98      50.50             0.999900        91.70  Asia      
+Romania                  178       1.75       -0.70            2.45      38.40             0.940800        19.87  Europe    
+China                  10866       4.35        2.30            2.05      43.90             0.899950      1374.62  Asia      
+Qatar                    167       4.50        2.00            2.50      35.80             0.895000         2.34  Asia      
+Trinidad and Tobago       28       4.75        3.00            1.75      45.60             0.798000         1.36  Americas  
+Poland                   475       1.50        0.00            1.50      51.30             0.769500        38.44  Europe    
+Kazakhstan               184      12.00        8.70            3.30      23.30             0.768900        17.40  Asia      
+Russia                  1326      10.00        5.80            4.20      17.70             0.743400       146.30  Europe    
+Costa Rica                51       1.75        0.56            1.19      62.11             0.739109         4.85  Americas  
+Malaysia                 296       3.00        1.80            1.20      54.00             0.648000        31.20  Asia      
+Colombia                 292       7.50        5.96            1.54      38.00             0.585200        48.20  Americas  
+Azerbaijan                53      15.00       12.10            2.90      16.00             0.464000         9.59  Asia      
+Cameroon                  29       2.45        0.55            1.90      19.90             0.378100        23.34  Africa    
+Bangladesh               195       6.75        5.38            1.37      27.30             0.374010       157.90  Asia      
+Uzbekistan                67       9.00        5.60            3.40      11.00             0.374000        31.19  Asia      
+New Zealand              174       1.75        0.40            1.35      24.60             0.332100         4.60  Oceania   
+Paraguay                  28       5.50        4.20            1.30      19.70             0.256100         6.76  Americas  
+-->
 </div>
 <div class="footnotes">
 <hr />
