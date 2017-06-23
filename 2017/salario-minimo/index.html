@@ -44,10 +44,6 @@ Bom, primeiramente precisaria de uma série dos valores históricos do salário 
 <link rel="stylesheet" href="../../css/tbrugz.css">
 
 
-
-
-
-
   </head>
   <body>
     <div class="wrapper">
@@ -88,9 +84,7 @@ Bom, primeiramente precisaria de uma série dos valores históricos do salário 
     
 
     <div class="article-content">
-
-
-<p>Me chamou a atenção um dia desses <a href="http://jopbj.blogspot.com.br/2016/11/a-luta-pelo-salario-minimo-no-brasil.html">um artigo</a> que mostrava a evolução do salário mínimo brasileiro real (descontada a inflação) ao longo do tempo - além de mostrar sob qual governo/período o país se encontrava. Achei interessante e logo comecei a imaginar como faria para elaborar um gráfico semelhante no <code>R</code>.</p>
+      <p>Me chamou a atenção um dia desses <a href="http://jopbj.blogspot.com.br/2016/11/a-luta-pelo-salario-minimo-no-brasil.html">um artigo</a> que mostrava a evolução do salário mínimo brasileiro real (descontada a inflação) ao longo do tempo - além de mostrar sob qual governo/período o país se encontrava. Achei interessante e logo comecei a imaginar como faria para elaborar um gráfico semelhante no <code>R</code>.</p>
 <p>Bom, primeiramente precisaria de uma série dos valores históricos do salário mímino. Achei duas que pareciam promissoras: <a href="http://www.portalbrasil.net/salariominimo.htm">portal brasil</a> e <a href="http://www.trt3.jus.br/informe/calculos/minimo.htm">trt3</a>. Deixando de lado a parte do <em>scrapping</em>, aqui está uma amostra da tabela - <em>ver arquivo <a href="../../data/2017/salario_minimo_br.csv">salario_minimo_br.csv</a></em>:</p>
 <pre class="r"><code>library(readr)
 library(dplyr)
@@ -277,7 +271,7 @@ for(i in 1:nrow(sm)) {
 
 ggplot(sm, aes(data, vr)) + geom_line() + scale_y_log10() +
   labs(y=&quot;valor em R$&quot;)</code></pre>
-<p><img src="figures/parareais-1.png" width="100%" /></p>
+<p><img src="../../post/2017/salario-minimo_files/figure-html/parareais-1.png" width="100%" /></p>
 <p>No gráfico acima podemos ver como se comportou o salário mínimo em termos absolutos (valores em R$ - escala logarítmica). Mas pouco se pode dizer do salário mínimo em termos reais - apenas que, se o poder de compra do salário mínimo teve pouca alteração, a inflação foi muito alta - em especial a partir da década de 1980 até o plano real (1994).</p>
 <div id="salario-minimo-real" class="section level2">
 <h2>Salário Mínimo real</h2>
@@ -293,7 +287,7 @@ ipc$ano &lt;- year(ipc$data)
 ipc$mes &lt;- month(ipc$data)
 
 ggplot(ipc, aes(data, valor)) + geom_line()</code></pre>
-<p><img src="figures/bcb_plot-1.png" width="100%" /></p>
+<p><img src="../../post/2017/salario-minimo_files/figure-html/bcb_plot-1.png" width="100%" /></p>
 <p>De posse do índice de preços podemos agora atualizar os valores históricos (nominais) do salário mínimo para obtermos o salário mínimo real. Faremos isso usando como base a data da última atualização do valor (2017-01-01), ou seja, todos os outros valores serão corrigidos (atualizados) para esta data. Para tanto incluiremos a coluna <code>fc</code> (fatores de correção) no <em>data.frame</em> <code>ipc</code> (abaixo uma amostra - 10 linhas - da tabela).</p>
 <pre class="r"><code>ipc&lt;-filter(ipc, data&lt;=ymd(&quot;2017-01-01&quot;))
 
@@ -421,7 +415,7 @@ select(sm, data, moeda, valor, vr, fc, vr_atu) %&gt;% sample_n(10) %&gt;% arrang
 </table>
 <p>E assim podemos ver como se comportou o salário mínimo ao longo do tempo:</p>
 <pre class="r"><code>ggplot(sm, aes(data, vr_atu)) + geom_line()</code></pre>
-<p><img src="figures/sm_plot1-1.png" width="100%" /></p>
+<p><img src="../../post/2017/salario-minimo_files/figure-html/sm_plot1-1.png" width="100%" /></p>
 <p>Para deixar o gráfico mais interessante podemos incluir a informação do período político pelo qual o país passava:</p>
 <pre class="r"><code>periodos &lt;- data_frame(
   id=c(1945,1964,1990,2003),
@@ -437,7 +431,7 @@ ggplot() +
   geom_line(data=sm, aes(data, vr_atu)) +
   labs(y = &quot;salário mínimo (R$)&quot;) +
   expand_limits(y = 0)</code></pre>
-<p><img src="figures/periodos-1.png" width="100%" /></p>
+<p><img src="../../post/2017/salario-minimo_files/figure-html/periodos-1.png" width="100%" /></p>
 </div>
 <div id="dados-do-ipea" class="section level2">
 <h2>Dados do IPEA</h2>
@@ -474,7 +468,7 @@ sm_all2 &lt;-
             alpha=0.3) +
   geom_line(data=sm_all2, aes(data, valor, color=correcao)) +
   expand_limits(y = 0) + scale_fill_brewer(palette = &quot;Set3&quot;)</code></pre>
-<p><img src="figures/plot_ipc_ipea-1.png" width="100%" /></p>
+<p><img src="../../post/2017/salario-minimo_files/figure-html/plot_ipc_ipea-1.png" width="100%" /></p>
 <p>Bom, após essas experimentações com séries de salário mínimo e inflação, o que podemos concluir? Algumas observações possíveis:</p>
 <ol style="list-style-type: decimal">
 <li><p>A escolha do índice de preços pode mudar bastante os valores de uma série de preços - justamente porque são correções cumulativas que têm um efeito exponencial (pense em juros compostos). A diferença entre os valores de salário mínimo de 1940 até meados dos anos 1990 é bem grande, apesar de os valores terem comportamentos semelhantes.</p></li>
@@ -489,8 +483,6 @@ sm_all2 &lt;-
 <li id="fn1"><p>Conforme o site do Ipeadata, a série <strong>37667 - Salário mínimo real</strong>, é assim definida: <em>Série em reais (R$) constantes do último mês, elaborada pelo IPEA, deflacionando-se o salário mínimo nominal pelo Índice Nacional de Preços ao Consumidor (INPC) do IBGE a partir de março de 1979. Para períodos anteriores, os deflatores utilizados foram o IGPC-Mtb (jan/1948-mar/1979), o IPC-RJ/FGV (jan/1944-jan/1948) e o IPC-SP/Fipe (jul/1940-jan/1944). O salário mínimo urbano foi instituído no Brasil por decreto-lei do presidente Getúlio Vargas, durante a ditadura do Estado Novo, e começou a vigorar em julho de 1940, com valores diferenciados entre estados e sub-regiões. Em 1943, foi incorporado à Consolidação das Leis do Trabalho (CLT) e, em 1963, foi estendido ao campo por meio do Estatuto do Trabalhador Rural. Foi nacionalmente unificado em maio de 1984, mas, desde 2000, a Lei Complementar 103 permite que os estados fixem pisos estaduais superiores ao mínimo nacional. Os dados desta série para o período em que a legislação federal definia faixas diversificadas referem-se sempre ao maior salário mínimo vigente no país</em>.<a href="#fnref1">↩</a></p></li>
 </ol>
 </div>
-
-
 
     </div>
   </article>

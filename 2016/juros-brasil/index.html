@@ -44,10 +44,6 @@ Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem R. Inici
 <link rel="stylesheet" href="../../css/tbrugz.css">
 
 
-
-
-
-
   </head>
   <body>
     <div class="wrapper">
@@ -88,11 +84,9 @@ Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem R. Inici
     
 
     <div class="article-content">
-
-
-<p>Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme <a href="http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404">certa noticia d’oglobo</a>, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o <a href="http://www.tradingeconomics.com/">tradingeconomics</a>, com informação de 181 países, entrou no baile.</p>
+      <p>Então, esses dias uns amigos estavam comentando numa rede social sobre o juro brasileiro, que seria o maior do mundo conforme <a href="http://oglobo.globo.com/economia/brasil-tem-maior-taxa-de-juro-real-do-mundo-19754404">certa noticia d’oglobo</a>, e que tal informação não estaria completa visto que a notícia fala apenas das 40 maiores economias - e o <a href="http://www.tradingeconomics.com/">tradingeconomics</a>, com informação de 181 países, entrou no baile.</p>
 <p>Bom, resolvi pegar os dados e fazer uns experimentos usando a linguagem <a href="https://www.r-project.org/">R</a>. Inicialmente transformei a tabela da página inicial do <em>tradingeconomics</em> num arquivo CSV e o carreguei (ver arquivo <a href="../../data/2016/tradingecon.csv">tradingecon.csv</a> - valores consultados em 22/dez/2016)</p>
-<pre class="r"><code>tab &lt;- read_csv(&quot;../../../static/data/2016/tradingecon.csv&quot;)</code></pre>
+<pre class="r"><code>tab &lt;- read_csv(&quot;2016/tradingecon.csv&quot;)</code></pre>
 <p>Juro real é o juro nominal menos a inflação:</p>
 <pre class="r"><code>tab$interest_real &lt;- tab$interest - tab$inflation</code></pre>
 <p>E assim podemos ver<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> quais são os países com maior taxa de juros (real) - coluna <code>interest_real</code>:</p>
@@ -666,7 +660,7 @@ gg&lt;- gg + scale_y_log10()
 gg&lt;- gg + aes(x= interest_real, y=gdp)
 gg + geom_point(aes(colour= continent)) +
   geom_text(data=filter(t2, gdp&gt;1000 | interest_real&lt; -2 | interest_real&gt; 6), aes(label=country), hjust=-0.1, vjust=-0.1, size=3)</code></pre>
-<p><img src="figures/fig_interest_real-1.png" width="100%" /></p>
+<p><img src="../../post/2016/juros-brasil_files/figure-html/fig_interest_real-1.png" width="100%" /></p>
 <p>Note-se que o Brasil já está um tanto fora do padrão no quadrante superior direito.</p>
 <div id="dispendio-total-com-juros" class="section level2">
 <h2>Dispêndio total com juros</h2>
@@ -1141,7 +1135,7 @@ vz</code></pre>
 gg&lt;- ggplot(t2)
 gg&lt;- gg + aes(x=interest_real, y=debt_gdp, size=gdp)
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, debt_gdp&gt;100 | interest_real&lt; -4 | interest_real&gt; 5), aes(x= interest_real, y=debt_gdp, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)</code></pre>
-<p><img src="figures/fig_debtspending_interest-1.png" width="100%" /></p>
+<p><img src="../../post/2016/juros-brasil_files/figure-html/fig_debtspending_interest-1.png" width="100%" /></p>
 <!--
 Ou então entre o juro e o PIB:
 
@@ -1160,7 +1154,7 @@ gg&lt;- gg + aes(x= gdp, y=debt_spending_real)
 gg&lt;- gg + geom_hline(yintercept = 0, colour=&quot;gray50&quot;)
 gg&lt;- gg + scale_x_log10()
 gg + geom_point(aes(colour= continent)) + geom_text(data=filter(t2, gdp&gt;1000 | debt_spending_real&gt;4 | debt_spending_real&lt; -2), aes(x=gdp, y=debt_spending_real, label=country), hjust=-0.1, vjust=-0.1, size=3, angle=45)</code></pre>
-<p><img src="figures/fig_debtspending_interest_logx-1.png" width="100%" /></p>
+<p><img src="../../post/2016/juros-brasil_files/figure-html/fig_debtspending_interest_logx-1.png" width="100%" /></p>
 <p>E daí dá pra ver que sim, o Brasil <em>se destaca</em>…</p>
 <p>Mas o que, afinal, isto significa? Bom, significa que não há paralelo, dentre as nações do porte do Brasil, de outras economias que gastem tanto com juros da dívida quanto o governo brasileiro: o Brasil gasta <code>4.47%</code> do seu PIB com juros enquanto a Índia, próxima colocada em dispêndio com juros para países com PIB semelhante ao brasileiro, gasta <code>1.76%</code>. E quando se gasta tanto com juros não é de se estranhar que faltem recursos para assuntos mais importantes.</p>
 <!--
@@ -1232,8 +1226,6 @@ Paraguay                  28       5.50        4.20            1.30      19.70  
 <li id="fn2"><p>É importante ressaltar que a taxa básica de juros de uma economia pode não refletir a taxa de juros (média) que o país deve pagar pelo montante de sua dívida visto que a dívida normalmente é contratada ao longo de diversos anos e a taxa básica de juros pode variar, e bastante, durante este período.<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
-
-
 
     </div>
   </article>
